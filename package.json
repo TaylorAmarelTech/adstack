@@ -1,0 +1,28 @@
+{
+  "name": "newsletter-platform",
+  "private": true,
+  "description": "AI-powered newsletter ad marketplace with subscriber embeddings",
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck",
+    "clean": "turbo clean",
+    "db:generate": "pnpm --filter @adstack/api db:generate",
+    "db:migrate": "pnpm --filter @adstack/api db:migrate",
+    "db:studio": "pnpm --filter @adstack/api db:studio"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.6",
+    "turbo": "^2.8.14",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}

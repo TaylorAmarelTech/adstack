@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: adstack-postgres
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: adstack
+      POSTGRES_PASSWORD: adstack_dev
+      POSTGRES_DB: adstack_dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U adstack -d adstack_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: adstack-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
+
+volumes:
+  postgres_data:
+  redis_data:
